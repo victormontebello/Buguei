@@ -1,7 +1,6 @@
 package montebello.buguei.core.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,19 +22,14 @@ public class Post {
     @JsonProperty("_id")
     private ObjectId id;
 
-    @JsonProperty("title")
     private String title;
 
-    @JsonProperty("content")
     private String content;
 
-    @JsonProperty("author")
     private String author;
 
-    @JsonProperty("tags")
-    private List<Tag> tags = new ArrayList<>();
+    private List<String> tags = new ArrayList<>();
 
-    @JsonProperty("data")
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

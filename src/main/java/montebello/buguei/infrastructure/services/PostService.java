@@ -20,12 +20,10 @@ public class PostService implements IPostService {
         this.mongoClient = mongoClient;
     }
 
-    @Override
     public void createPost(Post post) {
         var collection = mongoClient.getCollection("posts");
         if (collection != null) {
-            Document document = new Document()
-                    .append("title", post.getTitle())
+            Document document = new Document("title", post.getTitle())
                     .append("content", post.getContent())
                     .append("author", post.getAuthor())
                     .append("tags", post.getTags())
@@ -34,12 +32,22 @@ public class PostService implements IPostService {
         }
     }
 
-    @Override
     public void updatePost(Post post) {
-
+        var collection = mongoClient.getCollection("posts");
+        if (collection != null) {
+            Document document = new Document("_id", post.getId())
+                    .append("title", post.getTitle())
+                    .append("content", post.getContent())
+                    .append("author", post.getAuthor())
+                    .append("tags", post.getTags())
+                    .append("updatedAt", post.getUpdatedAt());
+            collection.updateOne(
+                    new Document("_id", post.getId()),
+                    new Document("$set", document)
+            );
+        }
     }
 
-    @Override
     public void deletePost(String id) {
         var collection = mongoClient.getCollection("posts");
         if (collection != null) {
@@ -47,7 +55,6 @@ public class PostService implements IPostService {
         }
     }
 
-    @Override
     public List<Document> getAllPosts() {
         var collection = mongoClient.getCollection("posts");
         if (collection != null) {
@@ -56,7 +63,6 @@ public class PostService implements IPostService {
         return List.of();
     }
 
-    @Override
     public Document getPostById(String id) {
         var collection = mongoClient.getCollection("posts");
         if (collection != null) {

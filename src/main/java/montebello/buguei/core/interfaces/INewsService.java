@@ -1,4 +1,4 @@
-﻿package montebello.buguei.core.interfaces;
+package montebello.buguei.core.interfaces;
 
 import montebello.buguei.core.entities.News;
 import org.bson.Document;
@@ -11,9 +11,9 @@ public interface INewsService {
 
     void updateNews(News news);
 
-    void deleteNews(ObjectId id);
+    void deleteNews(String id);
 
     List<Document> getAllNews();
 
-    Document getNewsById(ObjectId id);
+    Document getNewsById(String id);
 }

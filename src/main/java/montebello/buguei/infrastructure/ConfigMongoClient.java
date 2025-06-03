@@ -1,4 +1,4 @@
-﻿package montebello.buguei.infrastructure;
+package montebello.buguei.infrastructure;
 
 import com.mongodb.client.*;
 import org.bson.Document;

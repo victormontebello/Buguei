@@ -6,10 +6,7 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,12 +27,12 @@ public class PostsController {
     }
 
     @GetMapping("/{id}")
-    public Document getPostById(String id) {
+    public Document getPostById(@RequestParam String id) {
         return postService.getPostById(id);
     }
 
     @PostMapping
-    public HttpStatusCode createPost(Post post) {
+    public HttpStatusCode createPost(@RequestBody Post post) {
         postService.createPost(post);
         return HttpStatus.CREATED;
     }

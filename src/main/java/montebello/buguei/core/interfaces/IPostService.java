@@ -1,4 +1,4 @@
-﻿package montebello.buguei.core.interfaces;
+package montebello.buguei.core.interfaces;
 
 import montebello.buguei.core.entities.Post;
 import org.bson.Document;

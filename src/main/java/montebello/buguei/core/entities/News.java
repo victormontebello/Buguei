@@ -1,25 +1,28 @@
 package montebello.buguei.core.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class News {
 
-    private Long id;
+    @MongoId
+    @JsonProperty("_id")
+    private ObjectId id;
 
     private String title;
 
     private String content;
 
     private String author;
-
-    private String imageUrl;
 
     private String sourceUrl;
 }

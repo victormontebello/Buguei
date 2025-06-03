@@ -11,9 +11,9 @@ public interface IPostService {
 
     void updatePost(Post post);
 
-    void deletePost(ObjectId id);
+    void deletePost(String id);
 
     List<Document> getAllPosts();
 
-    Document getPostById(ObjectId id);
+    Document getPostById(String id);
 }

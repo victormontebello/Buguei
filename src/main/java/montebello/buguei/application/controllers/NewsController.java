@@ -1,4 +1,4 @@
-﻿package montebello.buguei.application.controllers;
+package montebello.buguei.application.controllers;
 
 import montebello.buguei.core.interfaces.INewsService;
 import org.bson.Document;

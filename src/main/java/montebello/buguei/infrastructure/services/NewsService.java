@@ -1,4 +1,4 @@
-﻿package montebello.buguei.infrastructure.services;
+package montebello.buguei.infrastructure.services;
 
 import com.kwabenaberko.newsapilib.models.Article;
 import montebello.buguei.core.entities.News;

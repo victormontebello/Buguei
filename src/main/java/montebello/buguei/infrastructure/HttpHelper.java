@@ -1,13 +1,15 @@
-﻿package montebello.buguei.infrastructure;
+package montebello.buguei.infrastructure;
 
 import com.kwabenaberko.newsapilib.NewsApiClient;
 import com.kwabenaberko.newsapilib.models.Article;
 import com.kwabenaberko.newsapilib.models.request.EverythingRequest;
 import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class HttpHelper {
 
     @Value("${NEWS_API_KEY}")

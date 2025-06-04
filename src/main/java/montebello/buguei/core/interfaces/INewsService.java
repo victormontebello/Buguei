@@ -9,7 +9,7 @@ import java.util.List;
 public interface INewsService {
     void createNews(News news);
 
-    void updateNews(News news);
+    void updateNews();
 
     void deleteNews(String id);
 

@@ -24,5 +24,7 @@ public class News {
 
     private String author;
 
+    private String imageUrl;
+
     private String sourceUrl;
 }

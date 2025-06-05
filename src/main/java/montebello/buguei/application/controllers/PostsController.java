@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
-public class PostsController {
+public class PostsController{
 
     private IPostService postService;
 
@@ -35,5 +35,10 @@ public class PostsController {
     public HttpStatusCode createPost(@RequestBody Post post) {
         postService.createPost(post);
         return HttpStatus.CREATED;
+    }
+
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "healthy";
     }
 }

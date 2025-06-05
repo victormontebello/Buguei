@@ -1,7 +1,6 @@
 package montebello.buguei.infrastructure.services;
 
 import com.kwabenaberko.newsapilib.models.Article;
-import montebello.buguei.core.Mappers.NewsMapper;
 import montebello.buguei.core.entities.News;
 import montebello.buguei.core.interfaces.IImuttableMapper;
 import montebello.buguei.core.interfaces.INewsService;

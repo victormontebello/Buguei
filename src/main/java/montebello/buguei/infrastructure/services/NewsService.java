@@ -1,9 +1,11 @@
 package montebello.buguei.infrastructure.services;
 
 import com.kwabenaberko.newsapilib.models.Article;
-import montebello.buguei.core.Mapper;
+import montebello.buguei.core.Mappers.NewsMapper;
 import montebello.buguei.core.entities.News;
+import montebello.buguei.core.interfaces.IImuttableMapper;
 import montebello.buguei.core.interfaces.INewsService;
+import montebello.buguei.core.interfaces.IValidator;
 import montebello.buguei.infrastructure.ConfigMongoClient;
 import montebello.buguei.infrastructure.HttpHelper;
 import org.bson.Document;
@@ -17,10 +19,17 @@ public class NewsService implements INewsService {
 
     private final ConfigMongoClient mongoClient;
     private final HttpHelper httpHelper;
+    private final IValidator<News> validator;
+    private final IImuttableMapper<News> mapper;
 
-    public NewsService(ConfigMongoClient mongoClient, HttpHelper httpHelper) {
+    public NewsService(ConfigMongoClient mongoClient,
+                       HttpHelper httpHelper,
+                       IValidator<News> validator,
+                       IImuttableMapper<News> newsMapper) {
         this.mongoClient = mongoClient;
         this.httpHelper = httpHelper;
+        this.validator = validator;
+        this.mapper = newsMapper;
     }
 
     public void createNews(News news) {
@@ -35,9 +44,11 @@ public class NewsService implements INewsService {
     }
 
     public void updateNews() {
-        var articles = httpHelper.GetArticles();
-        if (articles != null && !articles.isEmpty()) {
-            saveArticlesToMongo(articles);
+        if (validator.isTimeToUpdate()) {
+            var articles = httpHelper.GetArticles();
+            if (articles != null && !articles.isEmpty()) {
+                saveArticlesToMongo(articles);
+            }
         }
     }
 
@@ -53,7 +64,7 @@ public class NewsService implements INewsService {
         if (collection != null) {
             var documents = collection.find().into(new ArrayList<>());
             return documents.stream()
-                    .map(Mapper::MapNews)
+                    .map(mapper::Map)
                     .toList();
         }
         return List.of();
@@ -79,7 +90,7 @@ public class NewsService implements INewsService {
     public News getNewsById(String id) {
         var collection = mongoClient.getCollection("news");
         if (collection != null) {
-            return Mapper.MapNews(collection.find(new Document("_id", new ObjectId(id))).first());
+            return mapper.Map(collection.find(new Document("_id", new ObjectId(id))).first());
         }
         return null;
     }

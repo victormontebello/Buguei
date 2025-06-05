@@ -22,12 +22,12 @@ public class PostsController {
     }
 
     @GetMapping
-    public List<Document> getAllPosts() {
+    public List<Post> getAllPosts() {
         return postService.getAllPosts();
     }
 
     @GetMapping("/{id}")
-    public Document getPostById(@RequestParam String id) {
+    public Post getPostById(@PathVariable String id) {
         return postService.getPostById(id);
     }
 

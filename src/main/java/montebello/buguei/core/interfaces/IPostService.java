@@ -13,7 +13,7 @@ public interface IPostService {
 
     void deletePost(String id);
 
-    List<Document> getAllPosts();
+    List<Post> getAllPosts();
 
-    Document getPostById(String id);
+    Post getPostById(String id);
 }

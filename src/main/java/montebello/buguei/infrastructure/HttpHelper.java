@@ -13,10 +13,12 @@ import java.util.List;
 public class HttpHelper {
 
     @Value("${NEWS_API_KEY}")
-    private static String API_KEY;
+    private String API_KEY;
 
-    private static List<Article> articleResponse;
-    private static void RequestNewsApi(String query, String language, int pageSize) {
+    private List<Article> articleResponse;
+    private final Object lock = new Object();
+
+    private void RequestNewsApi(String query, String language, int pageSize) {
         NewsApiClient newsApiClient = new NewsApiClient(API_KEY);
         newsApiClient.getEverything(
                 new EverythingRequest.Builder()
@@ -28,18 +30,34 @@ public class HttpHelper {
                 new NewsApiClient.ArticlesResponseCallback() {
                     @Override
                     public void onSuccess(ArticleResponse response) {
-                        articleResponse = response.getArticles();
+                        synchronized (lock) {
+                            articleResponse = response.getArticles();
+                            lock.notifyAll();
+                        }
                     }
 
                     @Override
                     public void onFailure(Throwable throwable) {
-                        articleResponse = null;
+                        synchronized (lock) {
+                            articleResponse = null;
+                            lock.notifyAll();
+                            throwable.printStackTrace();
+                        }
                     }
                 });
     }
 
-    public static List<Article> GetArticles() {
-        RequestNewsApi("(software OR development OR AI)", "pt", 10);
+    public List<Article> GetArticles() {
+        synchronized (lock) {
+            RequestNewsApi("(software OR development OR AI)", "pt", 10);
+            while (articleResponse == null) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    System.err.println("Error while waiting for articles: " + e.getMessage());
+                }
+            }
+        }
         return articleResponse;
     }
 }

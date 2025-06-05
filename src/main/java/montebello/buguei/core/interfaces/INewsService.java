@@ -13,7 +13,7 @@ public interface INewsService {
 
     void deleteNews(String id);
 
-    List<Document> getAllNews();
+    List<News> getAllNews();
 
-    Document getNewsById(String id);
+    News getNewsById(String id);
 }

@@ -1,6 +1,7 @@
 package montebello.buguei.infrastructure;
 
 import com.mongodb.client.*;
+import montebello.buguei.core.entities.News;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,12 +29,6 @@ public class ConfigMongoClient {
 
     public MongoCollection<Document> getCollection(String collectionName) {
         MongoDatabase database = getMongoClient().getDatabase("buguei");
-        return database.getCollection(collectionName);
-    }
-
-    public void closeConn() {
-        if (mongoClient != null) {
-            mongoClient.close();
-        }
+        return database.getCollection(collectionName, Document.class);
     }
 }

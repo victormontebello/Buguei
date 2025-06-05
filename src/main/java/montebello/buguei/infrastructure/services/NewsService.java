@@ -1,6 +1,7 @@
 package montebello.buguei.infrastructure.services;
 
 import com.kwabenaberko.newsapilib.models.Article;
+import montebello.buguei.core.Mapper;
 import montebello.buguei.core.entities.News;
 import montebello.buguei.core.interfaces.INewsService;
 import montebello.buguei.infrastructure.ConfigMongoClient;
@@ -15,9 +16,11 @@ import java.util.List;
 public class NewsService implements INewsService {
 
     private final ConfigMongoClient mongoClient;
+    private final HttpHelper httpHelper;
 
-    public NewsService(ConfigMongoClient mongoClient) {
+    public NewsService(ConfigMongoClient mongoClient, HttpHelper httpHelper) {
         this.mongoClient = mongoClient;
+        this.httpHelper = httpHelper;
     }
 
     public void createNews(News news) {
@@ -26,13 +29,13 @@ public class NewsService implements INewsService {
             Document document = new Document("title", news.getTitle())
                     .append("content", news.getContent())
                     .append("author", news.getAuthor())
-                    .append("sourceUrl", news.getSourceUrl());
+                    .append("sourceUrl", news.getUrl());
             collection.insertOne(document);
         }
     }
 
     public void updateNews() {
-        var articles = HttpHelper.GetArticles();
+        var articles = httpHelper.GetArticles();
         if (articles != null && !articles.isEmpty()) {
             saveArticlesToMongo(articles);
         }
@@ -45,10 +48,13 @@ public class NewsService implements INewsService {
         }
     }
 
-    public List<Document> getAllNews() {
+    public List<News> getAllNews() {
         var collection = mongoClient.getCollection("news");
         if (collection != null) {
-            return collection.find().into(new ArrayList<>());
+            var documents = collection.find().into(new ArrayList<>());
+            return documents.stream()
+                    .map(Mapper::MapNews)
+                    .toList();
         }
         return List.of();
     }
@@ -58,20 +64,22 @@ public class NewsService implements INewsService {
         if (collection != null) {
             List<Document> documents = articles.stream()
                     .map(article -> new Document("title", article.getTitle())
-                            .append("content", article.getDescription())
+                            .append("content", article.getContent())
                             .append("author", article.getAuthor())
-                            .append("imageUrl", article.getUrlToImage())
-                            .append("sourceUrl", article.getUrl()))
+                            .append("urlToImage", article.getUrlToImage())
+                            .append("description", article.getDescription())
+                            .append("publishedAt", article.getPublishedAt())
+                            .append("url", article.getUrl()))
                     .toList();
 
             collection.insertMany(documents);
         }
     }
 
-    public Document getNewsById(String id) {
+    public News getNewsById(String id) {
         var collection = mongoClient.getCollection("news");
         if (collection != null) {
-            return collection.find(new Document("_id", new ObjectId(id))).first();
+            return Mapper.MapNews(collection.find(new Document("_id", new ObjectId(id))).first());
         }
         return null;
     }

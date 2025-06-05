@@ -1,5 +1,6 @@
 package montebello.buguei.application.controllers;
 
+import montebello.buguei.core.entities.News;
 import montebello.buguei.core.interfaces.INewsService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,12 @@ public class NewsController {
     }
 
     @GetMapping
-    public List<Document> getAllNews() {
+    public List<News> getAllNews() {
         return newsService.getAllNews();
     }
 
     @GetMapping("/{id}")
-    public Document getNewsById(@RequestParam String id) {
+    public News getNewsById(@PathVariable String id) {
         return newsService.getNewsById(id);
     }
 

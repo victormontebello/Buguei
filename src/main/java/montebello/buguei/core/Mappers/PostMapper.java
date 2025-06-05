@@ -13,8 +13,8 @@ public class PostMapper implements IImuttableMapper<Post> {
         post.setTitle(doc.getString("title"));
         post.setContent(doc.getString("content"));
         post.setAuthor(doc.getString("author"));
-        post.setCreatedAt(doc.getString("createdAt"));
-        post.setUpdatedAt(doc.getString("updatedAt"));
+        post.setCreatedAt(doc.getDate("createdAt"));
+        post.setUpdatedAt(doc.getDate("updatedAt"));
         post.setTags(doc.getList("tags", String.class));
         return post;
     }

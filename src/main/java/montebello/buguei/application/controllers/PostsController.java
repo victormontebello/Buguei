@@ -2,7 +2,6 @@ package montebello.buguei.application.controllers;
 
 import montebello.buguei.core.entities.Post;
 import montebello.buguei.core.interfaces.IPostService;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -22,11 +21,13 @@ public class PostsController{
     }
 
     @GetMapping
+    @CrossOrigin(origins = "*") //alterar para dominio específico em produção
     public List<Post> getAllPosts() {
         return postService.getAllPosts();
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "*")
     public Post getPostById(@PathVariable String id) {
         return postService.getPostById(id);
     }
@@ -39,6 +40,6 @@ public class PostsController{
 
     @GetMapping("/health")
     public String healthCheck() {
-        return "healthy";
+        return "posts controller healthy";
     }
 }

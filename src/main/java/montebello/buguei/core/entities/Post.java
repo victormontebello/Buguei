@@ -27,6 +27,7 @@ public class Post {
     private String title;
 
     private String content;
+    private String description;
 
     private String author;
 

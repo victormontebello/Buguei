@@ -11,8 +11,6 @@ public interface IPostService {
 
     void updatePost(Post post);
 
-    void deletePost(String id);
-
     List<Post> getAllPosts();
 
     Post getPostById(String id);

@@ -31,17 +31,6 @@ public class NewsService implements INewsService {
         this.mapper = newsMapper;
     }
 
-    public void createNews(News news) {
-        var collection = mongoClient.getCollection("news");
-        if (collection != null) {
-            Document document = new Document("title", news.getTitle())
-                    .append("content", news.getContent())
-                    .append("author", news.getAuthor())
-                    .append("sourceUrl", news.getUrl());
-            collection.insertOne(document);
-        }
-    }
-
     public void updateNews() {
         if (validator.isTimeToUpdate()) {
             var articles = httpHelper.GetArticles();

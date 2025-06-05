@@ -30,6 +30,8 @@ public class PostService implements IPostService {
                     .append("content", post.getContent())
                     .append("author", post.getAuthor())
                     .append("tags", post.getTags())
+                    .append("description", post.getDescription())
+                    .append("updatedAt", post.getCreatedAt())
                     .append("createdAt", post.getCreatedAt());
             collection.insertOne(document);
         }
@@ -40,6 +42,8 @@ public class PostService implements IPostService {
         if (collection != null) {
             Document document = new Document("title", post.getTitle())
                     .append("content", post.getContent())
+                    .append("createdAt", post.getCreatedAt())
+                    .append("description", post.getDescription())
                     .append("author", post.getAuthor())
                     .append("tags", post.getTags())
                     .append("updatedAt", post.getUpdatedAt());
@@ -47,13 +51,6 @@ public class PostService implements IPostService {
                     new Document("_id", new ObjectId(post.getId())),
                     new Document("$set", document)
             );
-        }
-    }
-
-    public void deletePost(String id) {
-        var collection = mongoClient.getCollection("posts");
-        if (collection != null) {
-            collection.deleteOne(new Document("_id", new ObjectId(id)));
         }
     }
 
